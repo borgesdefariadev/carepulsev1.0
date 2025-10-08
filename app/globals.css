@@ -9,8 +9,93 @@
 @custom-variant dark (&:is(.dark *));
 
 /* |================================================
-| 2. PURE CSS (Regras de Navegador/Overrides)
-|    Estas regras NÃO usam @apply e são aplicadas como CSS padrão.
+| 2. THEME VARIABLES
+|    Light and Dark mode variables
+|================================================
+*/
+:root {
+  --background: #ffffff;
+  --foreground: #0f172a;
+  
+  --card: #ffffff;
+  --card-foreground: #0f172a;
+  
+  --popover: #ffffff;
+  --popover-foreground: #0f172a;
+  
+  --primary: #24ae7c;
+  --primary-foreground: #ffffff;
+  
+  --secondary: #f1f5f9;
+  --secondary-foreground: #0f172a;
+  
+  --muted: #f1f5f9;
+  --muted-foreground: #64748b;
+  
+  --accent: #f1f5f9;
+  --accent-foreground: #0f172a;
+  
+  --destructive: #ef4444;
+  --destructive-foreground: #f8fafc;
+  
+  --border: #e2e8f0;
+  --input: #e2e8f0;
+  --ring: #94a3b8;
+  
+  --radius: 0.5rem;
+  
+  --dark-200: #f8fafc;
+  --dark-300: #f1f5f9;
+  --dark-400: #e2e8f0;
+  --dark-500: #cbd5e1;
+  --dark-600: #64748b;
+  --dark-700: #334155;
+  
+  --light-200: #0f172a;
+}
+
+.dark {
+  --background: #0f172a;
+  --foreground: #f8fafc;
+  
+  --card: #1e293b;
+  --card-foreground: #f8fafc;
+  
+  --popover: #1e293b;
+  --popover-foreground: #f8fafc;
+  
+  --primary: #24ae7c;
+  --primary-foreground: #f8fafc;
+  
+  --secondary: #334155;
+  --secondary-foreground: #f8fafc;
+  
+  --muted: #334155;
+  --muted-foreground: #94a3b8;
+  
+  --accent: #334155;
+  --accent-foreground: #f8fafc;
+  
+  --destructive: #ef4444;
+  --destructive-foreground: #f8fafc;
+  
+  --border: #334155;
+  --input: #334155;
+  --ring: #94a3b8;
+  
+  --dark-200: #1e293b;
+  --dark-300: #0f172a;
+  --dark-400: #1e293b;
+  --dark-500: #334155;
+  --dark-600: #94a3b8;
+  --dark-700: #cbd5e1;
+  
+  --light-200: #f8fafc;
+}
+
+/* |================================================
+| 3. PURE CSS (Regras de Navegador/Overrides)
+|    Estas regras NÃO usam @apply e são aplicadas como CSS padrão.
 |================================================
 */
 
@@ -118,259 +203,588 @@
   /* A classe 'remove-scrollbar' DEVE ser aplicada diretamente no seu JSX,
      pois ela é CSS puro e não uma utility do Tailwind.
      Ex: <div className="sidebar remove-scrollbar">...</div> */
-  @apply w-full max-w-72 flex-col overflow-auto bg-black-800 px-7 py-10;
+  width: 100%;
+  max-width: 18rem; /* 72 * 0.25rem */
+  flex-direction: column;
+  overflow: auto;
+  background-color: #1a1d21; /* black-800 */
+  padding: 2.5rem 1.75rem; /* py-10 px-7 */
 }
 
 .left-sidebar {
-  @apply hidden lg:flex;
+  display: none;
 }
+
+@media (min-width: 1024px) {
+  .left-sidebar {
+    display: flex;
+  }
+}
+
 
 .right-sidebar {
-  @apply hidden xl:flex;
+  display: none;
 }
 
+@media (min-width: 1280px) {
+  .right-sidebar {
+    display: flex;
+  }
+}
+
+
 .clip-text {
-  @apply bg-clip-text text-transparent;
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
 }
 
 .bg-image {
-  @apply bg-black-900 bg-light-rays bg-cover bg-no-repeat;
+  background-color: #0a0a0a;
+  background-image: url('/images/light-rays.svg');
+  background-size: cover;
+  background-repeat: no-repeat;
 }
 
 .header {
-  @apply text-32-bold md:text-36-bold;
+  font-size: 32px;
+  line-height: 36px;
+  font-weight: 700;
 }
+@media (min-width: 768px) {
+  .header {
+    font-size: 36px;
+    line-height: 40px;
+  }
+}
+
 
 .sub-header {
-  @apply text-18-bold md:text-24-bold;
+  font-size: 18px;
+  line-height: 24px;
+  font-weight: 700;
+}
+@media (min-width: 768px) {
+  .sub-header {
+    font-size: 24px;
+    line-height: 28px;
+    font-weight: 700;
+  }
 }
 
+
 .container {
-  @apply relative flex-1 overflow-y-auto px-[5%];
+  position: relative;
+  flex: 1;
+  overflow-y: auto;
+  padding-left: 5%;
+  padding-right: 5%;
 }
 
 .sub-container {
-  @apply mx-auto flex size-full flex-col py-10;
+  margin-left: auto;
+  margin-right: auto;
+  display: flex;
+  width: 100%;
+  height: 100%;
+  flex-direction: column;
+  padding-top: 2.5rem;
+  padding-bottom: 2.5rem;
 }
 
 .side-img {
-  @apply hidden h-full object-cover md:block;
+  display: none;
+  height: 100%;
+  object-fit: cover;
+}
+@media (min-width: 768px) {
+  .side-img {
+    display: block;
+  }
 }
 
+
 .copyright {
-  @apply text-14-regular justify-items-end text-center text-dark-600 xl:text-left;
+  font-size: 14px;
+  line-height: 18px;
+  font-weight: normal;
+  justify-items: end;
+  text-align: center;
+  color: var(--dark-600);
+}
+@media (min-width: 1280px) {
+  .copyright {
+    text-align: left;
+  }
 }
 
 /* ==== SUCCESS */
 .success-img {
-  @apply m-auto flex flex-1 flex-col items-center justify-between gap-10 py-10;
+  margin: auto;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2.5rem;
+  padding-top: 2.5rem;
+  padding-bottom: 2.5rem;
 }
 
 .request-details {
-  @apply flex w-full flex-col items-center gap-8 border-y-2 border-dark-400 py-8 md:w-fit md:flex-row;
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+  border-top: 2px solid var(--dark-400);
+  border-bottom: 2px solid var(--dark-400);
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+}
+@media (min-width: 768px) {
+  .request-details {
+    width: fit-content;
+    flex-direction: row;
+  }
 }
 
 /* ===== ADMIN */
 .admin-header {
-  @apply sticky top-3 z-20 mx-3 flex items-center justify-between rounded-2xl bg-dark-200 px-[5%] py-5 shadow-lg xl:px-12;
+  position: sticky;
+  top: 0.75rem;
+  z-index: 20;
+  margin-left: 0.75rem;
+  margin-right: 0.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-radius: 1rem;
+  background-color: var(--dark-200);
+  padding-left: 5%;
+  padding-right: 5%;
+  padding-top: 1.25rem;
+  padding-bottom: 1.25rem;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+@media (min-width: 1280px) {
+  .admin-header {
+    padding-left: 3rem;
+    padding-right: 3rem;
+  }
 }
 
 .admin-main {
-  @apply flex flex-col items-center space-y-6 px-[5%] pb-12 xl:space-y-12 xl:px-12;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+  padding-left: 5%;
+  padding-right: 5%;
+  padding-bottom: 3rem;
+}
+@media (min-width: 1280px) {
+  .admin-main {
+    gap: 3rem;
+    padding-left: 3rem;
+    padding-right: 3rem;
+  }
 }
 
 .admin-stat {
-  @apply flex w-full flex-col justify-between gap-5 sm:flex-row xl:gap-10;
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 1.25rem;
+}
+@media (min-width: 640px) {
+  .admin-stat {
+    flex-direction: row;
+  }
+}
+@media (min-width: 1280px) {
+  .admin-stat {
+    gap: 2.5rem;
+  }
 }
 
 /* ==== FORM */
 .radio-group {
-  @apply flex h-full flex-1 items-center gap-2 rounded-md border border-dashed border-dark-500 bg-dark-400 p-3;
+  display: flex;
+  height: 100%;
+  flex: 1;
+  align-items: center;
+  gap: 0.5rem;
+  border-radius: 0.375rem;
+  border: 1px dashed var(--dark-500);
+  background-color: var(--dark-400);
+  padding: 0.75rem;
 }
 
 .checkbox-label {
-  /* Regra duplicada removida */
-  @apply cursor-pointer text-sm font-medium text-dark-700 peer-disabled:cursor-not-allowed peer-disabled:opacity-70 md:leading-none;
+  cursor: pointer;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--dark-700);
+}
+.checkbox-label:has(+ input:disabled) {
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+@media (min-width: 768px) {
+  .checkbox-label {
+    line-height: 1;
+  }
 }
 
 /* ==== File Upload */
 .file-upload {
-  @apply text-12-regular flex cursor-pointer flex-col items-center justify-center gap-3 rounded-md border border-dashed border-dark-500 bg-dark-400 p-5;
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: normal;
+  display: flex;
+  cursor: pointer;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  border-radius: 0.375rem;
+  border: 1px dashed var(--dark-500);
+  background-color: var(--dark-400);
+  padding: 1.25rem;
 }
 
 .file-upload_label {
-  @apply flex flex-col justify-center gap-2 text-center text-dark-600;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.5rem;
+  text-align: center;
+  color: var(--dark-600);
 }
 
 /* ==== Stat Card */
 .stat-card {
-  @apply flex flex-1 flex-col gap-6 rounded-2xl bg-cover p-6 shadow-lg;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 1.5rem;
+  border-radius: 1rem;
+  background-size: cover;
+  padding: 1.5rem;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
 }
 
 /* ==== Status Badge */
 .status-badge {
-  @apply flex w-fit items-center gap-2 rounded-full px-4 py-2;
+  display: flex;
+  width: fit-content;
+  align-items: center;
+  gap: 0.5rem;
+  border-radius: 9999px;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
 }
 
 /* Data Table */
 .data-table {
-  @apply z-10 w-full overflow-hidden rounded-lg border border-dark-400 shadow-lg;
+  z-index: 10;
+  width: 100%;
+  overflow: hidden;
+  border-radius: 0.5rem;
+  border: 1px solid var(--dark-400);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
 }
 
 .table-actions {
-  @apply flex w-full items-center justify-between space-x-2 p-4;
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding: 1rem;
 }
 
 /* ===== ALIGNMENTS */
 .flex-center {
-  @apply flex items-center justify-center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .flex-between {
-  @apply flex items-center justify-between;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 /* ===== TYPOGRAPHY */
 .text-36-bold {
-  @apply text-[36px] leading-[40px] font-bold;
+  font-size: 36px;
+  line-height: 40px;
+  font-weight: 700;
 }
 
 .text-24-bold {
-  @apply text-[24px] leading-[28px] font-bold;
+  font-size: 24px;
+  line-height: 28px;
+  font-weight: 700;
 }
 
 .text-32-bold {
-  @apply text-[32px] leading-[36px] font-bold;
+  font-size: 32px;
+  line-height: 36px;
+  font-weight: 700;
 }
 
 .text-18-bold {
-  @apply text-[18px] leading-[24px] font-bold;
+  font-size: 18px;
+  line-height: 24px;
+  font-weight: 700;
 }
 
 .text-16-semibold {
-  /* Regra duplicada removida */
-  @apply text-[16px] leading-[20px] font-semibold;
+  font-size: 16px;
+  line-height: 20px;
+  font-weight: 600;
 }
 
 .text-16-regular {
-  /* Regra duplicada removida */
-  @apply text-[16px] leading-[20px] font-normal;
+  font-size: 16px;
+  line-height: 20px;
+  font-weight: 400;
 }
 
 .text-14-medium {
-  /* Regra duplicada removida */
-  @apply text-[14px] leading-[18px] font-medium;
+  font-size: 14px;
+  line-height: 18px;
+  font-weight: 500;
 }
 
 .text-14-regular {
-  @apply text-[14px] leading-[18px] font-normal;
+  font-size: 14px;
+  line-height: 18px;
+  font-weight: 400;
 }
 
 .text-12-regular {
-  @apply text-[12px] leading-[16px] font-normal;
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 400;
 }
 
 .text-12-semibold {
-  @apply text-[12px] leading-[16px] font-semibold;
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 600;
 }
 
-/* =====  SHADCN OVERRIDES */
+/* =====  SHADCN OVERRIDES */
 .shad-primary-btn {
-  @apply bg-green-500 text-white !important;
+  background-color: var(--green-500) !important;
+  color: white !important;
 }
 
 .shad-danger-btn {
-  @apply bg-red-700 text-white !important;
+  background-color: var(--red-700) !important;
+  color: white !important;
 }
 
 .shad-gray-btn {
-  @apply border border-dark-500 cursor-pointer bg-dark-400 text-white !important;
+  border: 1px solid var(--dark-500) !important;
+  cursor: pointer !important;
+  background-color: var(--dark-400) !important;
+  color: white !important;
 }
 
 .shad-input-label {
-  @apply text-14-medium text-dark-700 !important;
+  font-size: 14px !important;
+  line-height: 18px !important;
+  font-weight: 500 !important;
+  color: var(--dark-700) !important;
 }
 
 .shad-input {
-  @apply bg-dark-400 placeholder:text-dark-600 border-dark-500 h-11 focus-visible:ring-0 focus-visible:ring-offset-0 !important;
+  background-color: var(--dark-400) !important;
+  border-color: var(--dark-500) !important;
+  height: 2.75rem !important;
+}
+.shad-input::placeholder {
+  color: var(--dark-600) !important;
+}
+.shad-input:focus-visible {
+  outline: 2px solid transparent !important;
+  outline-offset: 0 !important;
 }
 
 .shad-input-icon {
-  @apply bg-dark-400 placeholder:text-dark-600 border-dark-500 h-11 focus-visible:ring-0 focus-visible:ring-offset-0 !important;
+  background-color: var(--dark-400) !important;
+  border-color: var(--dark-500) !important;
+  height: 2.75rem !important;
+}
+.shad-input-icon::placeholder {
+  color: var(--dark-600) !important;
+}
+.shad-input-icon:focus-visible {
+  outline: 2px solid transparent !important;
+  outline-offset: 0 !important;
 }
 
 .shad-textArea {
-  @apply bg-dark-400 placeholder:text-dark-600 border-dark-500 focus-visible:ring-0 focus-visible:ring-offset-0 !important;
+  background-color: var(--dark-400) !important;
+  border-color: var(--dark-500) !important;
+}
+.shad-textArea::placeholder {
+  color: var(--dark-600) !important;
+}
+.shad-textArea:focus-visible {
+  outline: 2px solid transparent !important;
+  outline-offset: 0 !important;
 }
 
-.shad-combobox-item {
-  @apply data-[disabled=true]:pointer-events-none data-[disabled=true]:opacity-50 !important;
+.shad-combobox-item[data-disabled=true] {
+  pointer-events: none !important;
+  opacity: 0.5 !important;
 }
 
 .shad-combobox-trigger {
-  @apply h-11 !important;
+  height: 2.75rem !important;
 }
 
 .shad-select-trigger {
-  @apply bg-dark-400 placeholder:text-dark-600 border-dark-500 h-11 focus:ring-0 focus:ring-offset-0 !important;
+  background-color: var(--dark-400) !important;
+  border-color: var(--dark-500) !important;
+  height: 2.75rem !important;
+}
+.shad-select-trigger::placeholder {
+  color: var(--dark-600) !important;
+}
+.shad-select-trigger:focus {
+  outline: 2px solid transparent !important;
+  outline-offset: 2px !important;
+  box-shadow: 0 0 0 0 var(--ring) !important;
 }
 
 .shad-select-content {
-  @apply bg-dark-400 border-dark-500 !important;
+  background-color: var(--dark-400) !important;
+  border-color: var(--dark-500) !important;
 }
 
 .shad-dialog {
-  @apply bg-dark-400 border-dark-500 !important;
+  background-color: var(--dark-400) !important;
+  border-color: var(--dark-500) !important;
 }
 
 .shad-dialog button {
-  @apply focus:ring-0 focus:ring-offset-0 focus-visible:border-none focus-visible:outline-none focus-visible:ring-transparent focus-visible:ring-offset-0 !important;
+  outline: none !important;
+}
+.shad-dialog button:focus, 
+.shad-dialog button:focus-visible {
+  box-shadow: 0 0 0 0 transparent !important;
+  outline-offset: 0 !important;
+  border: none !important;
+  outline: none !important;
 }
 
 .shad-error {
-  @apply text-red-400 !important;
+  color: var(--red-400) !important;
 }
 
 .shad-table {
-  @apply rounded-lg overflow-hidden !important;
+  border-radius: 0.5rem !important;
+  overflow: hidden !important;
 }
 
 .shad-table-row-header {
-  @apply border-b border-dark-400 text-light-200 hover:bg-transparent !important;
+  border-bottom: 1px solid var(--dark-400) !important;
+  color: var(--light-200) !important;
+}
+.shad-table-row-header:hover {
+  background-color: transparent !important;
 }
 
 .shad-table-row {
-  @apply border-b border-dark-400 text-light-200 !important;
+  border-bottom: 1px solid var(--dark-400) !important;
+  color: var(--light-200) !important;
 }
 
 .shad-otp {
-  @apply w-full flex justify-between !important;
+  width: 100% !important;
+  display: flex !important;
+  justify-content: space-between !important;
 }
 
 .shad-otp-slot {
-  @apply text-36-bold justify-center flex border border-dark-500 rounded-lg size-16 gap-4 !important;
+  font-size: 36px !important;
+  line-height: 40px !important;
+  font-weight: 700 !important;
+  display: flex !important;
+  justify-content: center !important;
+  border: 1px solid var(--dark-500) !important;
+  border-radius: 0.5rem !important;
+  width: 4rem !important;
+  height: 4rem !important;
+  gap: 1rem !important;
 }
 
 .shad-alert-dialog {
-  @apply space-y-5 bg-dark-400 border-dark-500 outline-none !important;
+  row-gap: 1.25rem !important;
+  background-color: var(--dark-400) !important;
+  border-color: var(--dark-500) !important;
+  outline: none !important;
 }
 
 .shad-sheet-content button {
-  @apply top-2 focus:ring-0 focus:ring-offset-0 focus-visible:border-none focus-visible:outline-none focus-visible:ring-transparent focus-visible:ring-offset-0 !important;
+  top: 0.5rem !important;
+  outline: none !important;
+}
+.shad-sheet-content button:focus,
+.shad-sheet-content button:focus-visible {
+  box-shadow: 0 0 0 0 transparent !important;
+  box-shadow: 0 0 0 0 transparent !important;
+  border: none !important;
+  outline: none !important;
 }
 
-/* =====  REACT PHONE NUMBER INPUT OVERRIDES */
+/* =====  REACT PHONE NUMBER INPUT OVERRIDES */
 .input-phone {
-  @apply mt-2 h-11 rounded-md px-3 text-sm border bg-dark-400 placeholder:text-dark-600 border-dark-500 !important;
+  margin-top: 0.5rem !important;
+  height: 2.75rem !important;
+  border-radius: 0.375rem !important;
+  padding-left: 0.75rem !important;
+  padding-right: 0.75rem !important;
+  font-size: 0.875rem !important;
+  border: 1px solid var(--dark-500) !important;
+  background-color: var(--dark-400) !important;
+}
+.input-phone::placeholder {
+  color: var(--dark-600) !important;
 }
 
-/* =====  REACT DATE PICKER OVERRIDES */
+/* =====  REACT DATE PICKER OVERRIDES */
 .date-picker {
-  @apply overflow-hidden border-transparent w-full placeholder:text-dark-600 h-11 text-14-medium rounded-md px-3 outline-none !important;
+  overflow: hidden !important;
+  border: transparent !important;
+  width: 100% !important;
+  height: 2.75rem !important;
+  font-size: 14px !important;
+  line-height: 18px !important;
+  font-weight: 500 !important;
+  border-radius: 0.375rem !important;
+  padding-left: 0.75rem !important;
+  padding-right: 0.75rem !important;
+  outline: none !important;
+}
+.date-picker::placeholder {
+  color: var(--dark-600) !important;
 }
 /* ---break---
 */
-@theme inline {
+@layer theme {
+  :root {
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
@@ -406,7 +820,9 @@
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
+  }
 }
+
 /* ---break---
 */
 :root {
@@ -482,9 +898,14 @@
 */
 @layer base {
   * {
-    @apply border-border outline-ring/50;
+    border-color: var(--border);
+    outline: 2px solid transparent;
+    outline-offset: 2px;
+    outline-color: var(--ring);
+    outline-color: color-mix(in srgb, var(--ring) 50%, transparent);
   }
   body {
-    @apply bg-background text-foreground;
+    background-color: var(--background);
+    color: var(--foreground);
   }
 }
