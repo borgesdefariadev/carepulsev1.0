@@ -1,18 +1,6 @@
-/* |================================================
-| 1. TAILWIND CORE IMPORT (v4)
-|    Substitui @tailwind base, components e utilities.
-|================================================
-*/
 @import "tailwindcss";
-/* ---break---
-*/
-@custom-variant dark (&:is(.dark *));
+/* ---break--- */
 
-/* |================================================
-| 2. THEME VARIABLES
-|    Light and Dark mode variables
-|================================================
-*/
 :root {
   --background: #ffffff;
   --foreground: #0f172a;
@@ -93,13 +81,7 @@
   --light-200: #f8fafc;
 }
 
-/* |================================================
-| 3. PURE CSS (Regras de Navegador/Overrides)
-|    Estas regras NÃO usam @apply e são aplicadas como CSS padrão.
-|================================================
-*/
-
-/* Remove scrollbar (CSS Puro) */
+/* Remove scrollbar */
 .remove-scrollbar::-webkit-scrollbar {
   width: 0px;
   height: 0px;
