@@ -25,7 +25,7 @@ export default function RootLayout({
       <body
         className={cn(
           plusJakartaSans.variable,
-          'min-h-screen bg-background text-foreground font-sans antialiased'
+          'min-h-screen bg-black text-foreground font-sans antialiased'
         )}
       >
         <ThemeProvider
