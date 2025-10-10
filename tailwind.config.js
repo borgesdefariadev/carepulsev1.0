@@ -1,13 +1,13 @@
 /** @type {import('tailwindcss').Config} */
 
-export default {
+const config = {
   content: [
     './pages/**/*.{js,ts,jsx,tsx,mdx}',
     './components/**/*.{js,ts,jsx,tsx,mdx}',
     './app/**/*.{js,ts,jsx,tsx,mdx}',
   ],
   theme: {
-    extend: {
+    extends: {
       colors: {
         green: {
           DEFAULT: "#24AE7C",
@@ -67,5 +67,7 @@ export default {
       },
     },
   },
-  plugins: [require('tailwindcss-animate')],
-}
+  plugins: [],
+};
+
+export default config;
