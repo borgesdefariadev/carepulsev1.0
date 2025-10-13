@@ -3,7 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { ID, Query } from "node-appwrite";
 
-import { Appointment } from "@/types/appwrite.types";
+import { Appointment, CreateAppointmentParams, UpdateAppointmentParams } from "@/types/appwrite.types";
 
 import {
   APPOINTMENT_COLLECTION_ID,
@@ -40,7 +40,8 @@ export const getRecentAppointmentList = async () => {
       APPOINTMENT_COLLECTION_ID!,
       [Query.orderDesc("$createdAt")]
     );
-
+    // cast the response to a shaped object we expect
+    const appointmentsRes = appointments as unknown as { documents: Appointment[]; total: number }
     // const scheduledAppointments = (
     //   appointments.documents as Appointment[]
     // ).filter((appointment) => appointment.status === "scheduled");
@@ -67,7 +68,7 @@ export const getRecentAppointmentList = async () => {
       cancelledCount: 0,
     };
 
-    const counts = (appointments.documents as Appointment[]).reduce(
+  const counts = (appointmentsRes.documents as Appointment[]).reduce(
       (acc, appointment) => {
         switch (appointment.status) {
           case "scheduled":
@@ -86,9 +87,9 @@ export const getRecentAppointmentList = async () => {
     );
 
     const data = {
-      totalCount: appointments.total,
+      totalCount: appointmentsRes.total,
       ...counts,
-      documents: appointments.documents,
+      documents: appointmentsRes.documents,
     };
 
     return parseStringify(data);

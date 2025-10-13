@@ -13,6 +13,7 @@ import {
   users,
 } from "../appwrite.config";
 import { parseStringify } from "../utils";
+import { CreateUserParams, RegisterUserParams } from "@/types/appwrite.types";
 
 // CREATE APPWRITE USER
 export const createUser = async (user: CreateUserParams) => {
@@ -27,14 +28,17 @@ export const createUser = async (user: CreateUserParams) => {
     );
 
     return parseStringify(newuser);
-  } catch (error: any) {
+  } catch (error: unknown) {
     // Check existing user
-    if (error && error?.code === 409) {
+    const err = error as { code?: number } | undefined
+    if (err && err.code === 409) {
       const existingUser = await users.list([
         Query.equal("email", [user.email]),
       ]);
 
-      return existingUser.users[0];
+      const existingUserRes = existingUser as unknown as { users: unknown[] }
+
+      return existingUserRes.users[0];
     }
     console.error("An error occurred while creating a new user:", error);
   }
@@ -61,7 +65,7 @@ export const registerPatient = async ({
 }: RegisterUserParams) => {
   try {
     // Upload file ->  // https://appwrite.io/docs/references/cloud/client-web/storage#createFile
-    let file;
+  let file: unknown;
     if (identificationDocument) {
       const inputFile =
         identificationDocument &&
@@ -70,7 +74,7 @@ export const registerPatient = async ({
           identificationDocument?.get("fileName") as string
         );
 
-      file = await storage.createFile(BUCKET_ID!, ID.unique(), inputFile);
+      file = await storage.createFile(BUCKET_ID!, ID.unique(), inputFile) as unknown;
     }
 
     // Create new patient document -> https://appwrite.io/docs/references/cloud/server-nodejs/databases#createDocument
@@ -79,9 +83,9 @@ export const registerPatient = async ({
       PATIENT_COLLECTION_ID!,
       ID.unique(),
       {
-        identificationDocumentId: file?.$id ? file.$id : null,
-        identificationDocumentUrl: file?.$id
-          ? `${ENDPOINT}/storage/buckets/${BUCKET_ID}/files/${file.$id}/view??project=${PROJECT_ID}`
+        identificationDocumentId: (file as unknown as { $id?: string })?.$id ? (file as unknown as { $id?: string }).$id : null,
+        identificationDocumentUrl: (file as unknown as { $id?: string })?.$id
+          ? `${ENDPOINT}/storage/buckets/${BUCKET_ID}/files/${(file as unknown as { $id?: string }).$id}/view??project=${PROJECT_ID}`
           : null,
         ...patient,
       }
@@ -102,7 +106,8 @@ export const getPatient = async (userId: string) => {
       [Query.equal("userId", [userId])]
     );
 
-    return parseStringify(patients.documents[0]);
+  const patientsRes = patients as unknown as { documents: unknown[] }
+  return parseStringify(patientsRes.documents[0]);
   } catch (error) {
     console.error(
       "An error occurred while retrieving the patient details:",
