@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import { E164Number } from "libphonenumber-js/core";
 import Image from "next/image";
 import ReactDatePicker from "react-datepicker";
@@ -27,12 +26,9 @@ export enum FormFieldType {
   SKELETON = "skeleton",
 }
 
-interface CustomProps<
-  TFieldValues extends FieldValues = FieldValues,
-  TName extends Path<TFieldValues> = Path<TFieldValues>
-> {
+interface CustomProps<TFieldValues extends FieldValues = FieldValues> {
   control: Control<TFieldValues>;
-  name: TName;
+  name: Path<TFieldValues>;
   label?: string;
   placeholder?: string;
   iconSrc?: string;
@@ -41,24 +37,21 @@ interface CustomProps<
   dateFormat?: string;
   showTimeSelect?: boolean;
   children?: React.ReactNode;
-  renderSkeleton?: (field: ControllerRenderProps<TFieldValues, TName>) => React.ReactNode;
+  renderSkeleton?: (field: ControllerRenderProps<TFieldValues, Path<TFieldValues>>) => React.ReactNode;
   fieldType: FormFieldType;
 }
 
-function RenderInput<
-  TFieldValues extends FieldValues,
-  TName extends Path<TFieldValues>
->({
+const RenderInput = <TFieldValues extends FieldValues = FieldValues>({
   field,
   props,
 }: {
-  field: ControllerRenderProps<TFieldValues, TName>;
-  props: CustomProps<TFieldValues, TName>;
-}) {
+  field: ControllerRenderProps<TFieldValues, Path<TFieldValues>>;
+  props: CustomProps<TFieldValues>;
+}) => {
   switch (props.fieldType) {
     case FormFieldType.INPUT:
       return (
-        <div className="flex rounded-md border border-dark-500 bg-dark-400">
+        <div className="flex rounded-md border border-neutral-500 bg-neutral-400">
           {props.iconSrc && (
             <Image
               src={props.iconSrc}
@@ -119,7 +112,7 @@ function RenderInput<
       );
     case FormFieldType.DATE_PICKER:
       return (
-        <div className="flex rounded-md border border-dark-500 bg-dark-400">
+        <div className="flex rounded-md border border-neutral-500 bg-neutral-400">
           <Image
             src="/assets/icons/calendar.svg"
             height={24}
@@ -155,16 +148,15 @@ function RenderInput<
         </FormControl>
       );
     case FormFieldType.SKELETON:
-      return props.renderSkeleton ? props.renderSkeleton(field) : null;
+  return props.renderSkeleton ? props.renderSkeleton(field) : null;
     default:
       return null;
   }
 };
 
-function CustomFormField<
-  TFieldValues extends FieldValues = FieldValues,
-  TName extends Path<TFieldValues> = Path<TFieldValues>
->(props: CustomProps<TFieldValues, TName>) {
+const CustomFormField = <TFieldValues extends FieldValues = FieldValues>(
+  props: CustomProps<TFieldValues>
+) => {
   const { control, name, label } = props;
 
   return (
@@ -183,6 +175,6 @@ function CustomFormField<
       )}
     />
   );
-}
+};
 
 export default CustomFormField;
