@@ -1,38 +1,36 @@
-export type AppointmentStatus = 'scheduled' | 'pending' | 'cancelled'
+import { Models } from "node-appwrite";
 
-export interface Appointment {
-  $id?: string
-  userId?: string
-  primaryPhysician?: string
-  schedule?: string | Date
-  status?: AppointmentStatus
-  cancellationReason?: string
-  [key: string]: unknown
+export interface Patient extends Models.Document {
+  userId: string;
+  name: string;
+  email: string;
+  phone: string;
+  birthDate: Date;
+  gender: Gender;
+  address: string;
+  occupation: string;
+  emergencyContactName: string;
+  emergencyContactNumber: string;
+  primaryPhysician: string;
+  insuranceProvider: string;
+  insurancePolicyNumber: string;
+  allergies: string | undefined;
+  currentMedication: string | undefined;
+  familyMedicalHistory: string | undefined;
+  pastMedicalHistory: string | undefined;
+  identificationType: string | undefined;
+  identificationNumber: string | undefined;
+  identificationDocument: FormData | undefined;
+  privacyConsent: boolean;
 }
 
-export interface CreateAppointmentParams {
-  userId: string
-  primaryPhysician?: string
-  schedule?: string | Date
-  status?: AppointmentStatus
-  [key: string]: unknown
-}
-
-export interface UpdateAppointmentParams {
-  appointmentId: string
-  userId: string
-  timeZone?: string
-  appointment: Partial<CreateAppointmentParams>
-  type?: 'schedule' | 'cancel'
-}
-
-export interface CreateUserParams {
-  email: string
-  phone?: string
-  name?: string
-  [key: string]: unknown
-}
-
-export interface RegisterUserParams extends CreateUserParams {
-  identificationDocument?: FormData
+export interface Appointment extends Models.Document {
+  patient: Patient;
+  schedule: Date;
+  status: Status;
+  primaryPhysician: string;
+  reason: string;
+  note: string;
+  userId: string;
+  cancellationReason: string | null;
 }
