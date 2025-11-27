@@ -30,7 +30,7 @@ const RegisterForm = ({ user }: { user: User }) => {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
 
-  const form = useForm<z.infer<typeof PatientFormValidation>>({
+  const form = useForm({
     resolver: zodResolver(PatientFormValidation),
     defaultValues: {
       ...PatientFormDefaultValues,
@@ -40,7 +40,9 @@ const RegisterForm = ({ user }: { user: User }) => {
     },
   });
 
-  const onSubmit = async (values: z.infer<typeof PatientFormValidation>) => {
+  type PatientForm = z.infer<typeof PatientFormValidation>;
+
+  const onSubmit = async (values: PatientForm) => {
     setIsLoading(true);
 
     // Store file info in form data as
@@ -195,7 +197,7 @@ const RegisterForm = ({ user }: { user: User }) => {
               control={form.control}
               name="occupation"
               label="Occupation"
-              placeholder=" Software Engineer"
+              placeholder="Software Engineer"
             />
           </div>
 
@@ -308,7 +310,7 @@ const RegisterForm = ({ user }: { user: User }) => {
 
         <section className="space-y-6">
           <div className="mb-9 space-y-1">
-            <h2 className="sub-header">Identification and Verfication</h2>
+      <h2 className="sub-header">Identification and Verification</h2>
           </div>
 
           <CustomFormField
@@ -340,7 +342,10 @@ const RegisterForm = ({ user }: { user: User }) => {
             label="Scanned Copy of Identification Document"
             renderSkeleton={(field) => (
               <FormControl>
-                <FileUploader files={field.value} onChange={field.onChange} />
+                <FileUploader
+                  files={field.value as File[] | undefined}
+                  onChange={field.onChange}
+                />
               </FormControl>
             )}
           />
