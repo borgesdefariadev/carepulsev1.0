@@ -20,3 +20,37 @@ export function formatDateTime(date: string | Date | number, timeZone?: string) 
     return { dateTime: d.toISOString() }
   }
 }
+
+// Convert a File object to a URL usable by <Image src={...} />
+export function convertFileToUrl(file: File | undefined | null): string {
+  if (!file) return "/assets/images/placeholder.png";
+
+  try {
+    // createObjectURL works in browser; for server-side usage this will just return placeholder
+    if (typeof window !== "undefined" && "URL" in window) {
+      return URL.createObjectURL(file as Blob);
+    }
+  } catch (e) {
+    // fallback
+  }
+
+  return "/assets/images/placeholder.png";
+}
+
+// Simple symmetric encryption helpers (placeholder implementations).
+// These are small wrappers around base64 encoding/decoding to satisfy the app's usage.
+export function encryptKey(value: string): string {
+  try {
+    return Buffer.from(value, "utf-8").toString("base64");
+  } catch {
+    return value;
+  }
+}
+
+export function decryptKey(value: string): string {
+  try {
+    return Buffer.from(value, "base64").toString("utf-8");
+  } catch {
+    return value;
+  }
+}

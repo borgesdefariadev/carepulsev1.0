@@ -1,6 +1,10 @@
-import { Models } from "node-appwrite";
+// Provide a minimal Document base shape to avoid depending on node-appwrite types here
+export interface DocumentBase {
+  $id: string;
+  [key: string]: any;
+}
 
-export interface Patient extends Models.Document {
+export interface Patient extends DocumentBase {
   userId: string;
   name: string;
   email: string;
@@ -24,7 +28,7 @@ export interface Patient extends Models.Document {
   privacyConsent: boolean;
 }
 
-export interface Appointment extends Models.Document {
+export interface Appointment extends DocumentBase {
   patient: Patient;
   schedule: Date;
   status: Status;
