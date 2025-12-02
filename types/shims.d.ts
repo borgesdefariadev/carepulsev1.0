@@ -6,9 +6,12 @@ declare module "@sentry/nextjs" {
 }
 
 declare module "@tanstack/react-table" {
-  export type ColumnDef<T = any> = any;
-  export type Row<T = any> = any;
+  export type ColumnDef<TData = any, TValue = any> = any;
+  export type Row<TData = any> = any;
   export const useReactTable: any;
+  export const getCoreRowModel: any;
+  export const getPaginationRowModel: any;
+  export const flexRender: any;
 }
 
 declare module "@radix-ui/react-alert-dialog" { const e: any; export = e }

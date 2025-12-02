@@ -88,7 +88,7 @@ export const PasskeyModal = () => {
           <InputOTP
             maxLength={6}
             value={passkey}
-            onChange={(value) => setPasskey(value)}
+            onChange={(value: string) => setPasskey(value)}
           >
             <InputOTPGroup className="shad-otp">
               <InputOTPSlot className="shad-otp-slot" index={0} />
@@ -107,10 +107,7 @@ export const PasskeyModal = () => {
           )}
         </div>
         <AlertDialogFooter>
-          <AlertDialogAction
-            onClick={(e) => validatePasskey(e)}
-            className="shad-primary-btn w-full"
-          >
+          <AlertDialogAction onClick={validatePasskey} className="shad-primary-btn w-full">
             Enter Admin Passkey
           </AlertDialogAction>
         </AlertDialogFooter>

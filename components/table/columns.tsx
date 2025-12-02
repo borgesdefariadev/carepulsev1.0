@@ -13,23 +13,23 @@ import { StatusBadge } from "../StatusBadge";
 export const columns: ColumnDef<Appointment>[] = [
   {
     header: "#",
-    cell: ({ row }) => {
+    cell: ({ row }: { row: any }) => {
       return <p className="text-14-medium ">{row.index + 1}</p>;
     },
   },
   {
     accessorKey: "patient",
     header: "Patient",
-    cell: ({ row }) => {
-      const appointment = row.original;
+    cell: ({ row }: { row: any }) => {
+      const appointment = row.original as Appointment;
       return <p className="text-14-medium ">{appointment.patient.name}</p>;
     },
   },
   {
     accessorKey: "status",
     header: "Status",
-    cell: ({ row }) => {
-      const appointment = row.original;
+    cell: ({ row }: { row: any }) => {
+      const appointment = row.original as Appointment;
       return (
         <div className="min-w-[115px]">
           <StatusBadge status={appointment.status} />
@@ -40,8 +40,8 @@ export const columns: ColumnDef<Appointment>[] = [
   {
     accessorKey: "schedule",
     header: "Appointment",
-    cell: ({ row }) => {
-      const appointment = row.original;
+    cell: ({ row }: { row: any }) => {
+      const appointment = row.original as Appointment;
       return (
         <p className="text-14-regular min-w-[100px]">
           {formatDateTime(appointment.schedule).dateTime}
@@ -52,8 +52,8 @@ export const columns: ColumnDef<Appointment>[] = [
   {
     accessorKey: "primaryPhysician",
     header: "Doctor",
-    cell: ({ row }) => {
-      const appointment = row.original;
+    cell: ({ row }: { row: any }) => {
+      const appointment = row.original as Appointment;
 
       const doctor = Doctors.find(
         (doctor) => doctor.name === appointment.primaryPhysician
@@ -76,8 +76,8 @@ export const columns: ColumnDef<Appointment>[] = [
   {
     id: "actions",
     header: () => <div className="pl-4">Actions</div>,
-    cell: ({ row }) => {
-      const appointment = row.original;
+    cell: ({ row }: { row: any }) => {
+      const appointment = row.original as Appointment;
 
       return (
         <div className="flex gap-1">
