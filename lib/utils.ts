@@ -40,7 +40,15 @@ export function convertFileToUrl(file: File | undefined | null): string {
 // Simple symmetric encryption helpers (placeholder implementations).
 // These are small wrappers around base64 encoding/decoding to satisfy the app's usage.
 export function encryptKey(value: string): string {
+  // Cross-platform base64 encode (works in browser and Node)
   try {
+    if (typeof window !== "undefined" && typeof window.btoa === "function") {
+      // browser-safe base64
+      return window.btoa(unescape(encodeURIComponent(value)));
+    }
+    // Node environment
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    const { Buffer } = require("buffer");
     return Buffer.from(value, "utf-8").toString("base64");
   } catch {
     return value;
@@ -49,6 +57,12 @@ export function encryptKey(value: string): string {
 
 export function decryptKey(value: string): string {
   try {
+    if (typeof window !== "undefined" && typeof window.atob === "function") {
+      return decodeURIComponent(escape(window.atob(value)));
+    }
+    // Node environment
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    const { Buffer } = require("buffer");
     return Buffer.from(value, "base64").toString("utf-8");
   } catch {
     return value;
