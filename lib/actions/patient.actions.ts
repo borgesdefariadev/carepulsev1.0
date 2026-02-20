@@ -13,7 +13,11 @@ import {
   users,
 } from "../appwrite.config";
 import { parseStringify } from "../utils";
-import { CreateUserParams, RegisterUserParams } from "@/types/appwrite.types";
+import {
+  CreateUserParams,
+  RegisterUserParams,
+  Patient,
+} from "@/types/appwrite.types";
 
 // CREATE APPWRITE USER
 export const createUser = async (user: CreateUserParams) => {
@@ -45,11 +49,11 @@ export const createUser = async (user: CreateUserParams) => {
 };
 
 // GET USER
-export const getUser = async (userId: string) => {
+export const getUser = async (userId: string): Promise<User | undefined> => {
   try {
     const user = await users.get(userId);
 
-    return parseStringify(user);
+    return parseStringify(user) as User;
   } catch (error) {
     console.error(
       "An error occurred while retrieving the user details:",
@@ -62,7 +66,7 @@ export const getUser = async (userId: string) => {
 export const registerPatient = async ({
   identificationDocument,
   ...patient
-}: RegisterUserParams) => {
+}: RegisterUserParams): Promise<Patient | undefined> => {
   try {
     // Upload file ->  // https://appwrite.io/docs/references/cloud/client-web/storage#createFile
   let file: unknown;
@@ -91,14 +95,14 @@ export const registerPatient = async ({
       }
     );
 
-    return parseStringify(newPatient);
+    return parseStringify(newPatient) as Patient;
   } catch (error) {
     console.error("An error occurred while creating a new patient:", error);
   }
 };
 
 // GET PATIENT
-export const getPatient = async (userId: string) => {
+export const getPatient = async (userId: string): Promise<Patient | undefined> => {
   try {
     const patients = await databases.listDocuments(
       DATABASE_ID!,
@@ -107,7 +111,7 @@ export const getPatient = async (userId: string) => {
     );
 
   const patientsRes = patients as unknown as { documents: unknown[] }
-  return parseStringify(patientsRes.documents[0]);
+  return parseStringify(patientsRes.documents[0]) as Patient | undefined;
   } catch (error) {
     console.error(
       "An error occurred while retrieving the patient details:",

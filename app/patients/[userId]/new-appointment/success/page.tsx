@@ -11,9 +11,9 @@ const RequestSuccess = async ({
   params: { userId },
 }: SearchParamProps) => {
   const appointmentId = (searchParams?.appointmentId as string) || "";
-  const appointment = (await getAppointment(appointmentId)) as any;
+  const appointment = await getAppointment(appointmentId);
 
-  const doctor = Doctors.find((doctor) => doctor.name === appointment.primaryPhysician);
+  const doctor = Doctors.find((doctor) => doctor.name === appointment?.primaryPhysician);
 
   return (
     <div className=" flex h-screen max-h-screen px-[5%]">
@@ -61,7 +61,7 @@ const RequestSuccess = async ({
               width={24}
               alt="calendar"
             />
-            <p> {formatDateTime(appointment.schedule).dateTime}</p>
+            <p> {appointment ? formatDateTime(appointment.schedule).dateTime : ""}</p>
           </div>
         </section>
 

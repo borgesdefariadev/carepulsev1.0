@@ -3,7 +3,11 @@
 import { revalidatePath } from "next/cache";
 import { ID, Query } from "node-appwrite";
 
-import { Appointment, CreateAppointmentParams, UpdateAppointmentParams } from "@/types/appwrite.types";
+import {
+  Appointment,
+  CreateAppointmentParams,
+  UpdateAppointmentParams,
+} from "@/types/appwrite.types";
 
 import {
   APPOINTMENT_COLLECTION_ID,
@@ -16,7 +20,7 @@ import { formatDateTime, parseStringify } from "../utils";
 //  CREATE APPOINTMENT
 export const createAppointment = async (
   appointment: CreateAppointmentParams
-) => {
+): Promise<Appointment | undefined> => {
   try {
     const newAppointment = await databases.createDocument(
       DATABASE_ID!,
@@ -26,14 +30,23 @@ export const createAppointment = async (
     );
 
     revalidatePath("/admin");
-    return parseStringify(newAppointment);
+    return parseStringify(newAppointment) as Appointment;
   } catch (error) {
     console.error("An error occurred while creating a new appointment:", error);
   }
 };
 
 //  GET RECENT APPOINTMENTS
-export const getRecentAppointmentList = async () => {
+export const getRecentAppointmentList = async (): Promise<
+  | {
+      totalCount: number;
+      scheduledCount: number;
+      pendingCount: number;
+      cancelledCount: number;
+      documents: Appointment[];
+    }
+  | undefined
+> => {
   try {
     const appointments = await databases.listDocuments(
       DATABASE_ID!,
@@ -92,7 +105,13 @@ export const getRecentAppointmentList = async () => {
       documents: appointmentsRes.documents,
     };
 
-    return parseStringify(data);
+    return parseStringify(data) as {
+      totalCount: number;
+      scheduledCount: number;
+      pendingCount: number;
+      cancelledCount: number;
+      documents: Appointment[];
+    };
   } catch (error) {
     console.error(
       "An error occurred while retrieving the recent appointments:",
@@ -140,14 +159,16 @@ export const updateAppointment = async ({
     await sendSMSNotification(userId, smsMessage);
 
     revalidatePath("/admin");
-    return parseStringify(updatedAppointment);
+    return parseStringify(updatedAppointment) as Appointment;
   } catch (error) {
     console.error("An error occurred while scheduling an appointment:", error);
   }
 };
 
 // GET APPOINTMENT
-export const getAppointment = async (appointmentId: string) => {
+export const getAppointment = async (
+  appointmentId: string
+): Promise<Appointment | undefined> => {
   try {
     const appointment = await databases.getDocument(
       DATABASE_ID!,
@@ -155,7 +176,7 @@ export const getAppointment = async (appointmentId: string) => {
       appointmentId
     );
 
-    return parseStringify(appointment);
+    return parseStringify(appointment) as Appointment;
   } catch (error) {
     console.error(
       "An error occurred while retrieving the existing patient:",

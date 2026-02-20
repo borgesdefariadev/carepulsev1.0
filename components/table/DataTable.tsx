@@ -51,13 +51,20 @@ export function DataTable<TData, TValue>({
     getPaginationRowModel: getPaginationRowModel(),
   });
 
+  const headerGroups = table.getHeaderGroups();
+  const rows = table.getRowModel().rows;
+
+  type HeaderGroupType = typeof headerGroups[number];
+  type RowType = typeof rows[number];
+  type CellType = ReturnType<RowType["getVisibleCells"]>[number];
+
   return (
     <div className="data-table">
       <Table className="shad-table">
         <TableHeader className=" bg-dark-200">
-          {table.getHeaderGroups().map((headerGroup: any) => (
+          {headerGroups.map((headerGroup: HeaderGroupType) => (
             <TableRow key={headerGroup.id} className="shad-table-row-header">
-              {headerGroup.headers.map((header: any) => {
+              {headerGroup.headers.map((header: HeaderGroupType["headers"][number]) => {
                 return (
                   <TableHead key={header.id}>
                     {header.isPlaceholder
@@ -74,13 +81,13 @@ export function DataTable<TData, TValue>({
         </TableHeader>
         <TableBody>
           {table.getRowModel().rows?.length ? (
-            table.getRowModel().rows.map((row: any) => (
+            rows.map((row: RowType) => (
               <TableRow
                 key={row.id}
                 data-state={row.getIsSelected() && "selected"}
                 className="shad-table-row"
               >
-                {row.getVisibleCells().map((cell: any) => (
+                {row.getVisibleCells().map((cell: CellType) => (
                   <TableCell key={cell.id}>
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
                   </TableCell>

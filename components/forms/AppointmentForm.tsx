@@ -30,7 +30,7 @@ export const AppointmentForm = ({
   setOpen,
 }: {
   userId: string;
-  patientId: string;
+  patientId?: string;
   type: "create" | "schedule" | "cancel";
   appointment?: Appointment;
   setOpen?: Dispatch<SetStateAction<boolean>>;

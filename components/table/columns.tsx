@@ -10,26 +10,34 @@ import { Appointment } from "@/types/appwrite.types";
 import { AppointmentModal } from "../AppointmentModal";
 import { StatusBadge } from "../StatusBadge";
 
+type RowWrapper = {
+  original: Appointment;
+  index: number;
+  id?: string;
+  getVisibleCells?: () => any[];
+  getIsSelected?: () => boolean;
+};
+
 export const columns: ColumnDef<Appointment>[] = [
   {
     header: "#",
-    cell: ({ row }: { row: any }) => {
+    cell: ({ row }: { row: RowWrapper }) => {
       return <p className="text-14-medium ">{row.index + 1}</p>;
     },
   },
   {
     accessorKey: "patient",
     header: "Patient",
-    cell: ({ row }: { row: any }) => {
-      const appointment = row.original as Appointment;
+    cell: ({ row }: { row: RowWrapper }) => {
+      const appointment = row.original;
       return <p className="text-14-medium ">{appointment.patient.name}</p>;
     },
   },
   {
     accessorKey: "status",
     header: "Status",
-    cell: ({ row }: { row: any }) => {
-      const appointment = row.original as Appointment;
+    cell: ({ row }: { row: RowWrapper }) => {
+      const appointment = row.original;
       return (
         <div className="min-w-[115px]">
           <StatusBadge status={appointment.status} />
@@ -40,8 +48,8 @@ export const columns: ColumnDef<Appointment>[] = [
   {
     accessorKey: "schedule",
     header: "Appointment",
-    cell: ({ row }: { row: any }) => {
-      const appointment = row.original as Appointment;
+    cell: ({ row }: { row: RowWrapper }) => {
+      const appointment = row.original;
       return (
         <p className="text-14-regular min-w-[100px]">
           {formatDateTime(appointment.schedule).dateTime}
@@ -52,22 +60,14 @@ export const columns: ColumnDef<Appointment>[] = [
   {
     accessorKey: "primaryPhysician",
     header: "Doctor",
-    cell: ({ row }: { row: any }) => {
-      const appointment = row.original as Appointment;
+    cell: ({ row }: { row: RowWrapper }) => {
+      const appointment = row.original;
 
-      const doctor = Doctors.find(
-        (doctor) => doctor.name === appointment.primaryPhysician
-      );
+      const doctor = Doctors.find((doctor) => doctor.name === appointment.primaryPhysician);
 
       return (
         <div className="flex items-center gap-3">
-          <Image
-            src={doctor?.image!}
-            alt="doctor"
-            width={100}
-            height={100}
-            className="size-8"
-          />
+          <Image src={doctor?.image!} alt="doctor" width={100} height={100} className="size-8" />
           <p className="whitespace-nowrap">Dr. {doctor?.name}</p>
         </div>
       );
@@ -76,8 +76,8 @@ export const columns: ColumnDef<Appointment>[] = [
   {
     id: "actions",
     header: () => <div className="pl-4">Actions</div>,
-    cell: ({ row }: { row: any }) => {
-      const appointment = row.original as Appointment;
+    cell: ({ row }: { row: RowWrapper }) => {
+      const appointment = row.original;
 
       return (
         <div className="flex gap-1">
