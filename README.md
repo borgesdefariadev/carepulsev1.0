@@ -71,18 +71,6 @@ npm start
 - `NEXT_PUBLIC_ADMIN_PASSKEY` — passkey for the admin modal (dev-only)
 - Appwrite config in `lib/appwrite.config.ts`: `ENDPOINT`, `PROJECT_ID`, `DATABASE_ID`, `BUCKET_ID`
 
-**Developer Insights & Rationale**
-- **Shim then tighten**: Start with small shims for missing typings so the repo compiles; replace shims with accurate types or `@types/*` packages progressively.
-- **Zod + react-hook-form**: If generic inference from `zodResolver` causes errors, omit the `useForm` generic and instead type the submit handler with `z.infer<typeof schema>` to stay type-safe without fighting the resolver.
-- **Action typing**: Returning `Promise<T | undefined>` makes callers handle missing data explicitly and removes unsafe `any` assumptions.
-- **Security note**: `encryptKey`/`decryptKey` are base64 utilities — not secure. Use Web Crypto or Node `crypto` and server-side validation for production secrets.
-
-**Troubleshooting**
-- Dev server error: missing Sentry config modules (errors from `instrumentation.ts`). Two quick remedies:
-	- Add small shim files `sentry.server.config.ts` and `sentry.edge.config.ts` exporting no-ops.
-	- Wrap optional imports in `instrumentation.ts` with `try { await import('./sentry.server.config') } catch {}` so missing files won't break dev.
-- If `npx tsc --noEmit` fails: check `types/shims.d.ts` and install missing `@types/*` packages where available.
-- If Appwrite actions fail: verify `lib/appwrite.config.ts` environment variables.
 
 **Testing & QA**
 - Manual checks:
@@ -92,12 +80,6 @@ npm start
 - Suggested automated tests:
 	- Unit tests for `lib/utils.ts` (formatting, base64 helpers).
 	- Integration tests for `lib/actions/*` using a mocked Appwrite client.
-
-**Roadmap & Next Steps**
-- Replace base64 passkey storage with HMAC/WebCrypto and server-side verification.
-- Replace `types/shims.d.ts` entries with proper `@types` or hand-authored declarations for Radix, TanStack, and other libs.
-- Centralize table types in `types/table.ts` and adopt TanStack official types.
-- Add e2e tests (Playwright/Cypress) for the registration -> appointment flow.
 
 **Developer Shortcuts**
 - Quick type-check:
@@ -110,18 +92,5 @@ npx tsc --noEmit
 
 ```powershell
 npm run dev
-# Watch the terminal for runtime errors
-```
 
-**Credits & Acknowledgments**
-- Cleanups and README were implemented as part of a TypeScript hygiene pass to make the project more maintainable and easier to extend.
 
-**License**
-- No license included. Add a `LICENSE` file if you plan to open-source.
-
----
-If you want, I can now:
-- Add the `sentry.server.config.ts` and `sentry.edge.config.ts` shims to remove the dev-server block immediately, or
-- Continue replacing other `any` occurrences with precise types following the same pattern used for tables and actions.
-
-Which would you like next?
