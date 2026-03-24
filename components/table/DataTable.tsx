@@ -9,7 +9,7 @@ import {
 } from "@tanstack/react-table";
 import Image from "next/image";
 import { redirect } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -31,25 +31,33 @@ export function DataTable<TData, TValue>({
   columns,
   data,
 }: DataTableProps<TData, TValue>) {
-  const encryptedKey =
-    typeof window !== "undefined"
-      ? window.localStorage.getItem("accessKey")
-      : null;
+  // Cache decrypted key to avoid repeated decryption
+  const decryptedKey = useMemo(() => {
+    if (typeof window !== "undefined") {
+      const encryptedKey = window.localStorage.getItem("accessKey");
+      return encryptedKey ? decryptKey(encryptedKey) : null;
+    }
+    return null;
+  }, []);
 
   useEffect(() => {
-    const accessKey = encryptedKey && decryptKey(encryptedKey);
-
-    if (accessKey !== process.env.NEXT_PUBLIC_ADMIN_PASSKEY!.toString()) {
+    const expectedKey = process.env.NEXT_PUBLIC_ADMIN_PASSKEY?.toString();
+    if (decryptedKey !== expectedKey) {
       redirect("/");
     }
-  }, [encryptedKey]);
+  }, [decryptedKey]);
 
-  const table = useReactTable({
-    data,
-    columns,
-    getCoreRowModel: getCoreRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
-  });
+  // Memoize table instance to prevent unnecessary recalculations
+  const table = useMemo(
+    () =>
+      useReactTable({
+        data,
+        columns,
+        getCoreRowModel: getCoreRowModel(),
+        getPaginationRowModel: getPaginationRowModel(),
+      }),
+    [data, columns]
+  );
 
   const headerGroups = table.getHeaderGroups();
   const rows = table.getRowModel().rows;

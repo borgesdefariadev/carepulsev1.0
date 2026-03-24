@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 
 import {
   AlertDialog,
@@ -27,22 +27,25 @@ export const PasskeyModal = () => {
   const [passkey, setPasskey] = useState("");
   const [error, setError] = useState("");
 
-  const encryptedKey =
-    typeof window !== "undefined"
-      ? window.localStorage.getItem("accessKey")
-      : null;
+  // Cache decrypted key to avoid repeated decryption
+  const decryptedKey = useMemo(() => {
+    if (typeof window !== "undefined") {
+      const encryptedKey = window.localStorage.getItem("accessKey");
+      return encryptedKey ? decryptKey(encryptedKey) : null;
+    }
+    return null;
+  }, []);
 
   useEffect(() => {
-    const accessKey = encryptedKey && decryptKey(encryptedKey);
+    if (!path) return;
 
-    if (path)
-      if (accessKey === process.env.NEXT_PUBLIC_ADMIN_PASSKEY!.toString()) {
-        setOpen(false);
-        router.push("/admin");
-      } else {
-        setOpen(true);
-      }
-  }, [encryptedKey]);
+    if (decryptedKey === process.env.NEXT_PUBLIC_ADMIN_PASSKEY?.toString()) {
+      setOpen(false);
+      router.push("/admin");
+    } else {
+      setOpen(true);
+    }
+  }, [decryptedKey, path, router]);
 
   const closeModal = () => {
     setOpen(false);

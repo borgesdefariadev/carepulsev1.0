@@ -1,5 +1,6 @@
 import { E164Number } from "libphonenumber-js/core";
 import Image from "next/image";
+import React from "react";
 import ReactDatePicker from "react-datepicker";
 import { Control, FieldValues, Path, ControllerRenderProps } from "react-hook-form";
 import PhoneInput from "react-phone-number-input";
@@ -41,13 +42,14 @@ interface CustomProps<TFieldValues extends FieldValues = FieldValues> {
   fieldType: FormFieldType;
 }
 
-const RenderInput = <TFieldValues extends FieldValues = FieldValues>({
-  field,
-  props,
-}: {
-  field: ControllerRenderProps<TFieldValues, Path<TFieldValues>>;
-  props: CustomProps<TFieldValues>;
-}) => {
+const RenderInput = React.memo(
+  <TFieldValues extends FieldValues = FieldValues>({
+    field,
+    props,
+  }: {
+    field: ControllerRenderProps<TFieldValues, Path<TFieldValues>>;
+    props: CustomProps<TFieldValues>;
+  }) => {
   switch (props.fieldType) {
     case FormFieldType.INPUT:
       return (
@@ -152,7 +154,8 @@ const RenderInput = <TFieldValues extends FieldValues = FieldValues>({
     default:
       return null;
   }
-};
+}
+) as typeof RenderInput;
 
 const CustomFormField = <TFieldValues extends FieldValues = FieldValues>(
   props: CustomProps<TFieldValues>
